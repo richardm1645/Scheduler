@@ -4,6 +4,6 @@ export function getAppointmentsForDay(state, day) {
   if (requestedDay.length > 0) {
     interviews = requestedDay[0].appointments;
   } 
-  const appointments = interviews.map(id => state.appointments[id]);
+  const appointments = interviews.map(id => state.appointments[id - 1]);
   return appointments;
 }
