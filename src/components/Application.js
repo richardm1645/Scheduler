@@ -6,7 +6,7 @@ import "components/Application.scss";
 
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "helpers/selectors";
 
 
 export default function Application() {
@@ -18,6 +18,8 @@ export default function Application() {
   });
 
   const setDay = day => setState({ ...state, day });
+
+  
   
   //Uses promises.all to fetch data via API
   useEffect(() => {
@@ -34,8 +36,11 @@ export default function Application() {
     })
   }, [])
 
+
   //Generates appointment component for each day
   const appointments = getAppointmentsForDay(state, state.day);
+
+  const interviewers = getInterviewersForDay(state, state.day);
 
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
@@ -46,6 +51,7 @@ export default function Application() {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        interviewers={interviewers}
       />
     );
   });
