@@ -1,16 +1,20 @@
+//Gets the appointments for a given day
 export function getAppointmentsForDay(state, day) {
+  //Gets the object of a selected day
   const requestedDay = state.days.filter(filteredDay => filteredDay.name === day);
   let interviews = [];
   if (requestedDay.length > 0) {
     interviews = requestedDay[0].appointments;
   } 
-  const appointments = interviews.map(id => state.appointments[id - 1]);
+  const appointments = interviews.map(id => state.appointments[id]);
   return appointments;
 }
 
+//Gets the interviewers available for the requested day
 export function getInterviewersForDay(state, day) {
   let requestedDay = state.days.filter(filteredDay => filteredDay.name === day);
   
+  //Returns an empty array if the requested day doesn't exist
   if (requestedDay <= 0) {
     return [];
   } 
@@ -24,6 +28,8 @@ export function getInterviewersForDay(state, day) {
   return interviewers;
 }
 
+
+//Gets the info for a single appointment
 export function getInterview(state, interview) {
 
   //returns null if there's no interview

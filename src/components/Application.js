@@ -20,7 +20,6 @@ export default function Application() {
   const setDay = day => setState({ ...state, day });
 
   
-  
   //Uses promises.all to fetch data via API
   useEffect(() => {
     Promise.all([
@@ -30,7 +29,7 @@ export default function Application() {
     ]).then((all) => {
       setState(prev => ({
         ...prev, days: all[0].data, 
-        appointments: Object.values(all[1].data),
+        appointments: all[1].data,
         interviewers: all[2].data
       }));
     })
@@ -41,7 +40,27 @@ export default function Application() {
   const appointments = getAppointmentsForDay(state, state.day);
 
   const interviewers = getInterviewersForDay(state, state.day);
+  
+  
 
+  //Updates state whenever an interview is added/removed/edited
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointmentsCopy = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({ 
+      ...state, 
+      appointments: appointmentsCopy
+    })
+  }
+  
+  //Fills the schedule for each day with its appointments
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
 
@@ -52,10 +71,13 @@ export default function Application() {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
       />
     );
   });
 
+  
+  
 
   return (
     <main className="layout">
@@ -83,6 +105,7 @@ export default function Application() {
       </section>
       <section className="schedule">
         {schedule}
+        {/* This appointment component is hardcoded to signify the end of schedule of each day */}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
