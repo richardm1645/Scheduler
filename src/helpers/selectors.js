@@ -31,11 +31,12 @@ export function getInterviewersForDay(state, day) {
 
 //Gets the info for a single appointment
 export function getInterview(state, interview) {
-
+  
   //returns null if there's no interview
   if (!interview) {
-    return interview;
+    return null;
   }
+
   const interviewInfo = {
     student: interview.student,
     interviewer: {

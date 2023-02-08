@@ -45,11 +45,14 @@ export default function Application() {
 
   //Updates state whenever an interview is added/removed/edited
   function bookInterview(id, interview) {
+
+    //Targets and copies the selected appointment
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
     };
 
+    //Rerenders the state and replaces the appointment with another
     const appointmentsCopy = {
       ...state.appointments,
       [id]: appointment
@@ -59,7 +62,27 @@ export default function Application() {
       appointments: appointmentsCopy
     })
   }
-  
+
+  //Same logic as bookInterview
+  function cancelInterview(id) {
+
+    //Targets and copies the selected appointment
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+
+    //Rerenders the state and replaces the appointment with another
+    const appointmentsCopy = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    
+    setState({ 
+      ...state, 
+      appointments: appointmentsCopy
+    })
+  }
   //Fills the schedule for each day with its appointments
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
@@ -72,6 +95,7 @@ export default function Application() {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
