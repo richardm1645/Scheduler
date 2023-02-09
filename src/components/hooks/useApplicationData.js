@@ -40,18 +40,44 @@ export function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    
+    //Counts up the number of spots that aren't occupied
+    function getNumOfSlots(day) {
+      let slots = 0;
+      for (const slot in day.appointments) {
+        if (appointmentsCopy[day.appointments[slot]].interview === null) {
+          slots += 1;
+        }
+      }
+      return slots;
+    }
+
+    //Update the number of spots if the day includes the appointment ID
+    const days = state.days.map(day => {
+      if (day.appointments.includes(id)) {
+        return {
+          ...day,
+          spots: getNumOfSlots(day)
+        }
+      } else {
+        return day;
+      }
+    })
+    
     setState({ 
       ...state, 
-      appointments: appointmentsCopy
+      appointments: appointmentsCopy,
+      days
     })
   }
 
-  //Same logic as bookInterview
+  /*Cancels a selected interview*/
   function cancelInterview(id) {
 
     //Targets and copies the selected appointment
     const appointment = {
-      ...state.appointments[id]
+      ...state.appointments[id],
+      interview: null
     };
 
     //Rerenders the state and replaces the appointment with another
@@ -60,9 +86,34 @@ export function useApplicationData() {
       [id]: appointment
     };
     
+    //Counts up the number of spots that aren't occupied
+    function getNumOfSlots(day) {
+      let slots = 0;
+      for (const slot in day.appointments) {
+        console.log("current slot: ", appointmentsCopy[day.appointments[slot]].interview)
+        if (appointmentsCopy[day.appointments[slot]].interview === null) {
+          slots += 1;
+        }
+      }
+      return slots;
+    }
+
+    //Update the number of spots if the day includes the appointment ID
+    const days = state.days.map(day => {
+      if (day.appointments.includes(id)) {
+        return {
+          ...day,
+          spots: getNumOfSlots(day)
+        }
+      } else {
+        return day;
+      }
+    })
+
     setState({ 
       ...state, 
-      appointments: appointmentsCopy
+      appointments: appointmentsCopy,
+      days
     })
   }
   return { state, setDay, bookInterview, cancelInterview }
