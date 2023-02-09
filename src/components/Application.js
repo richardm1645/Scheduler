@@ -18,8 +18,6 @@ export default function Application() {
   });
 
   const setDay = day => setState({ ...state, day });
-
-  
   //Uses promises.all to fetch data via API
   useEffect(() => {
     Promise.all([
@@ -64,12 +62,11 @@ export default function Application() {
   }
 
   //Same logic as bookInterview
-  function cancelInterview(id) {
+  function cancelInterview(id, interview) {
 
     //Targets and copies the selected appointment
     const appointment = {
-      ...state.appointments[id],
-      interview: null
+      ...state.appointments[id]
     };
 
     //Rerenders the state and replaces the appointment with another

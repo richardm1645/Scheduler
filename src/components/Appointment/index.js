@@ -8,6 +8,7 @@ import Empty from "./Empty";
 import Form from './Form';
 import Status from './Status';
 import Confirm from './Confirm';
+import Error from './Error';
 import { useVisualMode } from 'components/hooks/useVisualMode';
 
 
@@ -19,6 +20,8 @@ const EDIT = "EDIT";
 const SAVING = "SAVING";
 const DELETING = "DELETING";
 const CONFIRM = "CONFIRM"
+const ERROR_SAVE = "ERROR_SAVE"
+const ERROR_DELETE = "ERROR_DELETE"
 
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
@@ -34,22 +37,20 @@ export default function Appointment(props) {
     };
     //Initiates PUT request to the API to update the appointments 
     Axios.put(`http://localhost:8001/api/appointments/${props.id}`, { interview })
-      .then(transition(SAVING))
+      .then(transition(SAVING, true))
       .then(props.bookInterview(props.id, interview))
-      .then(() => transition(SHOW));
+      .then(() => transition(SHOW))
+      .catch(error => transition(ERROR_SAVE, true));
   }
 
   //Deletes an existing appointment
   function deleteAppointment() {
     //Initiates DELETE request to the API to update the appointments 
     Axios.delete(`http://localhost:8001/api/appointments/${props.id}`)
-      .then(transition(DELETING))
+      .then(transition(DELETING, true))
       .then(props.cancelInterview(props.id))
-      .then(() => transition(EMPTY));
-  }
-
-  function confirmDelete() {
-    transition(CONFIRM)
+      .then(() => transition(EMPTY))
+      .catch(error => transition(ERROR_DELETE, true));
   }
 
   return (
@@ -63,7 +64,7 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onEdit={() => transition(EDIT)}
-          onDelete={confirmDelete}
+          onDelete={() => transition(CONFIRM)}
         />
       )}
       
@@ -102,6 +103,20 @@ export default function Appointment(props) {
           onCancel={() => back()}
           onConfirm={deleteAppointment}
           message="Are you sure you would like to delete?"
+        />
+      )}
+
+      {mode === ERROR_SAVE && (
+        <Error 
+          message="Could not save appointment."
+          onClose={() => back()}
+        />
+      )}
+
+      {mode === ERROR_DELETE && (
+        <Error 
+          message="Could not delete appointment."
+          onClose={() => back()}
         />
       )}
 
