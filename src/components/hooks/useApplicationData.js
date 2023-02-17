@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Axios from "axios";
+import axios from "axios";
 
 export function useApplicationData() {
   
@@ -13,9 +13,9 @@ export function useApplicationData() {
   //Uses promises.all to fetch data via API
   useEffect(() => {
     Promise.all([
-      Axios.get('http://localhost:8001/api/days'),
-      Axios.get('http://localhost:8001/api/appointments'),
-      Axios.get('http://localhost:8001/api/interviewers')
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers')
     ]).then((all) => {
       setState(prev => ({
         ...prev, days: all[0].data, 
