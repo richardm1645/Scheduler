@@ -90,7 +90,6 @@ export function useApplicationData() {
     function getNumOfSlots(day) {
       let slots = 0;
       for (const slot in day.appointments) {
-        console.log("current slot: ", appointmentsCopy[day.appointments[slot]].interview)
         if (appointmentsCopy[day.appointments[slot]].interview === null) {
           slots += 1;
         }
