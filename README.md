@@ -1,4 +1,17 @@
 # Interview Scheduler
+A single-page React app that connects to an API, and lets users create, edit, and delete appointments in a week in real time. Uses Jest, Storybook, and Cypress to allow for static, unit, and end-to-end testing. 
+
+
+## Screenshots
+Site Homepage
+!["Homepage"](./docs/homepage.png)
+
+Creating Appointment
+!["Create Appointment"](./docs/appointment-form.png)
+
+Deleting Appointment
+!["Delete Appointment"](./docs/appointment-delete.png)
+
 
 ## Setup
 
