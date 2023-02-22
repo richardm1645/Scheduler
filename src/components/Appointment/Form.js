@@ -4,7 +4,9 @@ import InterviewerList from "components/InterviewerList";
 
 
 export default function Form(props) {
-  const [student, setStudent] = useState(props.student || "");
+
+  //Checks if props have student and interviewer values for edit mode, otherwise they're empty
+  const [student, setStudent] = useState(props.student || ""); 
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
 
@@ -16,6 +18,7 @@ export default function Form(props) {
     return;
   }
 
+  //Cancels setting up an appointment
   const cancel = function() {
     reset();
     validate();

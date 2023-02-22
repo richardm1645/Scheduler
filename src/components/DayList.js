@@ -2,6 +2,7 @@ import React from "react";
 import DayListItem from "./DayListItem";
 
 export default function DayList(props) {
+  //Format HTML for each day
   const mappedDays = props.days.map((day) => {
     return (
       <DayListItem 

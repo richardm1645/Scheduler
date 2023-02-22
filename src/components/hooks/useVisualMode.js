@@ -17,14 +17,15 @@ export function useVisualMode(initial) {
 
   //Transitions from secondary state to initial
   function back() {
-    //Can't mutate state, creates a shallow copy
+    //Removes the last instance of history from the array
     const historyCopy = [...history];
     if (historyCopy.length > 1) {
       historyCopy.pop();
     }
     
-    setHistory(historyCopy)
-    setMode(historyCopy[historyCopy.length - 1])
+    //Updates history state, then transition to the last visual mode in history array
+    setHistory(historyCopy);
+    setMode(historyCopy[historyCopy.length - 1]);
   }
 
   return { mode, transition, back };
