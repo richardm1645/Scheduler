@@ -10,8 +10,8 @@ export function useVisualMode(initial) {
     if(replace) {
       setMode(mode);
     } else {
-      setMode(mode);
       setHistory(prev => [...prev, mode]);
+      setMode(mode);
     }
   }
 

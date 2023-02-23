@@ -1,6 +1,5 @@
 import React from 'react'
 import "components/Appointment/styles.scss"
-import Axios from "axios";
 
 import Header from "./Header";
 import Show from "./Show";
@@ -35,20 +34,24 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    //Initiates PUT request to the API to update the appointments 
-    Axios.put(`http://localhost:8001/api/appointments/${props.id}`, { interview })
-      .then(transition(SAVING, true))
-      .then(props.bookInterview(props.id, interview))
+
+    transition(SAVING);
+
+    //Calls bookInterview, and transitions to SHOW if the PUT request was successful
+    props
+      .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
       .catch(error => transition(ERROR_SAVE, true));
   }
-
+  
   //Deletes an existing appointment
   function deleteAppointment() {
-    //Initiates DELETE request to the API to update the appointments 
-    Axios.delete(`http://localhost:8001/api/appointments/${props.id}`)
-      .then(transition(DELETING, true))
-      .then(props.cancelInterview(props.id))
+
+    transition(DELETING, true);
+
+    //Calls deleteInterview, and transitions to EMPTY if the DELETE request was successful
+    props
+      .cancelInterview(props.id)
       .then(() => transition(EMPTY))
       .catch(error => transition(ERROR_DELETE, true));
   }
